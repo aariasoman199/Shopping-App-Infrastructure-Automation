@@ -2,12 +2,9 @@
 name: "Shopping Application AMI Build And Deploy"
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-
   build-ami:
     name: "Build AMI with Packer"
     runs-on: ubuntu-latest
