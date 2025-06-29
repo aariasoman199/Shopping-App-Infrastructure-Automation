@@ -1,0 +1,47 @@
+---
+name: "Destroy Infrastructure with Terraform"
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destroy:
+        description: 'Are you sure you want to destroy the Infrastructure?'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+          - 'yes'
+          - 'no'
+
+jobs:
+
+  deploy-infra:
+    if: ${{ github.event.inputs.confirm_destroy == 'yes' }}
+    name: "Destroying Infra with Terraform"
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      TERRAFORM_VERSION: "1.12.2"
+    steps:
+
+      - name: "confirm_destroy value"
+        run: |
+          echo "confirm_destroy value : ${{ github.event.inputs.confirm_destroy }}"
+
+      - name: "Checkout Source Code"
+        uses: actions/checkout@v4
+
+      - name: "Terraform Installation"
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: "Terraform init"
+        run: terraform init 
+        working-directory: ./terraform/
+
+      - name: "Terraform Destroy"
+        run: terraform destroy -auto-approve 
+        working-directory: ./terraform/
