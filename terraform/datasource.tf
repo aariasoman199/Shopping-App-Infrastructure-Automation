@@ -3,12 +3,10 @@ data "aws_route53_zone" "my_domain" {
   private_zone = false
 }
 
-
-
 data "aws_ami" "latest_image" {
 
-  most_recent      = true
-  owners           = ["self"]
+  most_recent = true
+  owners      = ["self"]
 
   filter {
     name   = "name"
@@ -26,3 +24,12 @@ data "aws_ami" "latest_image" {
   }
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+data "aws_acm_certificate" "elb_certificate" {
+  domain      = var.domain_name
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
+}

@@ -1,3 +1,6 @@
 /terraform/shopping-production
 gitkey
 terraform/LICENSE.txt
+/terraform/.terraform
+/terraform/.terraform.lock.hcl
+/packer/LICENSE.txt
