@@ -15,7 +15,7 @@ on:
 
 jobs:
 
-  deploy-infra:
+  destroy-infra:
     if: ${{ github.event.inputs.confirm_destroy == 'yes' }}
     name: "Destroying Infra with Terraform"
     runs-on: ubuntu-latest
